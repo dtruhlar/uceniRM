@@ -29,7 +29,7 @@
             font-size: 1.2em;
         }
 
-        /* Mřížka pro dlaždice */
+        /* Mřížka pro dlaždice - Výchozí stav */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -38,7 +38,6 @@
             margin: 0 auto;
         }
 
-        /* Samotná dlaždice */
         .tile {
             background-color: #fff;
             border-radius: 12px;
@@ -53,9 +52,9 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            cursor: pointer;
         }
 
-        /* Efekt po přejetí myší */
         .tile:hover {
             transform: translateY(-8px);
             box-shadow: 0 12px 20px rgba(0,0,0,0.15);
@@ -80,116 +79,420 @@
             color: #95a5a6;
             margin-top: 8px;
         }
+
+        /* STYLY PRO TEST (skryto ve výchozím stavu) */
+        #test-view {
+            display: none;
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            background-color: #e74c3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .test-header {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Stránkování (jedna otázka) */
+        .question-card {
+            display: none; /* Všechny otázky skryty */
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #3498db;
+            background-color: #f9f9f9;
+        }
+        
+        .question-card.active {
+            display: block; /* Zobrazena pouze aktuální otázka */
+        }
+
+        .question-title { font-weight: bold; font-size: 1.1em; margin-bottom: 15px; }
+        .options label { display: block; background: #fff; padding: 10px 15px; margin-bottom: 8px; border-radius: 5px; cursor: pointer; transition: 0.2s; border: 1px solid #e0e0e0; }
+        .options label:hover { background: #eef2f5; }
+        .locked label { cursor: not-allowed; pointer-events: none; }
+        input[type="radio"] { margin-right: 10px; }
+        
+        .correct { background-color: #d4edda !important; border-color: #c3e6cb !important; color: #155724; font-weight: bold; }
+        .incorrect { background-color: #f8d7da !important; border-color: #f5c6cb !important; color: #721c24; }
+        
+        .explanation { margin-top: 15px; padding: 15px; border-radius: 4px; font-size: 0.95em; display: none; }
+        .explanation.success { background-color: #d4edda; border-left: 5px solid #28a745; color: #155724; }
+        .explanation.error { background-color: #fff3cd; border-left: 5px solid #dc3545; color: #856404; }
+        
+        /* Navigační tlačítka v testu */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        .nav-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        /* Spodní panel a výsledek */
+        .bottom-panel {
+            margin-top: 40px;
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+        }
+        .evaluate-btn {
+            display: block; width: 100%; padding: 15px; font-size: 1.2em; background-color: #2c3e50; color: white; border: none; border-radius: 8px; cursor: pointer; transition: 0.3s;
+        }
+        .evaluate-btn:hover { background-color: #1a252f; }
+        #result { font-size: 1.5em; text-align: center; font-weight: bold; margin-top: 20px; color: #2c3e50; }
+
+        /* Progress indikátor */
+        .progress-text {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        /* Responzivita */
+        @media (max-width: 600px) {
+            .nav-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .nav-btn {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <div class="header-container">
-        <h1>Rozcestník: Státnice z ČJ</h1>
-        <p class="subtitle">Vyberte si otázku k procvičení. Test se otevře v novém okně.</p>
+    <!-- Úvodní Rozcestník -->
+    <div id="home-view">
+        <div class="header-container">
+            <h1>Rozcestník: Státnice z ČJ</h1>
+            <p class="subtitle">Vyberte si otázku k procvičení.</p>
+        </div>
+
+        <div class="grid-container">
+            <!-- Všimni si odstranění target="_blank", událost se zachytí skriptem -->
+            <a href="otazka_1.html" class="tile" data-test="1">
+                <span class="tile-number">1</span>
+                <span class="tile-title">Otázka 1</span>
+                <span class="tile-desc">Divadla, Havel, Didaktika</span>
+            </a>
+
+            <a href="otazka_2.html" class="tile" data-test="2">
+                <span class="tile-number">2</span>
+                <span class="tile-title">Otázka 2</span>
+                <span class="tile-desc">19. století, RVP, ŠVP</span>
+            </a>
+
+            <a href="otazka_3.html" class="tile" data-test="3">
+                <span class="tile-number">3</span>
+                <span class="tile-title">Otázka 3</span>
+                <span class="tile-desc">Psychologie čtenářství, Normalizace</span>
+            </a>
+
+            <a href="otazka_4.html" class="tile" data-test="4">
+                <span class="tile-number">4</span>
+                <span class="tile-title">Otázka 4</span>
+                <span class="tile-desc">Role učitele, Meziválečná poezie</span>
+            </a>
+
+            <a href="otazka_5.html" class="tile" data-test="5">
+                <span class="tile-number">5</span>
+                <span class="tile-title">Otázka 5</span>
+                <span class="tile-desc">Učivo, Dramatická tvorba 2. pol. 19. st.</span>
+            </a>
+
+            <a href="otazka_6.html" class="tile" data-test="6">
+                <span class="tile-number">6</span>
+                <span class="tile-title">Otázka 6</span>
+                <span class="tile-desc">Principy, Meziválečná próza</span>
+            </a>
+
+            <a href="otazka_7.html" class="tile" data-test="7">
+                <span class="tile-number">7</span>
+                <span class="tile-title">Otázka 7</span>
+                <span class="tile-desc">Mezipředmětové, Česká próza po 1989</span>
+            </a>
+
+            <a href="otazka_8.html" class="tile" data-test="8">
+                <span class="tile-number">8</span>
+                <span class="tile-title">Otázka 8</span>
+                <span class="tile-desc">Film, Obraz válek, Ota Pavel</span>
+            </a>
+            
+            <a href="otazka_9.html" class="tile" data-test="9">
+                <span class="tile-number">9</span>
+                <span class="tile-title">Otázka 9</span>
+                <span class="tile-desc">Test zatím nevytvořen</span>
+            </a>
+
+            <a href="otazka_10.html" class="tile" data-test="10">
+                <span class="tile-number">10</span>
+                <span class="tile-title">Otázka 10</span>
+                <span class="tile-desc">Test zatím nevytvořen</span>
+            </a>
+
+            <!-- Další dlaždice dle potřeby... -->
+        </div>
     </div>
 
-    <div class="grid-container">
-        <!-- Generování 16 dlaždic -->
-        <!-- target="_blank" zajišťuje otevření v nové záložce -->
+    <!-- Samotný Test View -->
+    <div id="test-view">
+        <a class="back-button" onclick="zpetNaRozcestnik()">Zpět na rozcestník</a>
         
-        <a href="otazka_1.html" target="_blank" class="tile">
-            <span class="tile-number">1</span>
-            <span class="tile-title">Otázka 1</span>
-            <span class="tile-desc">Divadla, Havel, Didaktika</span>
-        </a>
+        <h2 class="test-header" id="test-header-title">Načítám test...</h2>
+        
+        <div class="progress-text" id="progress-indicator">Otázka 1 z X</div>
 
-        <a href="otazka_2.html" target="_blank" class="tile">
-            <span class="tile-number">2</span>
-            <span class="tile-title">Otázka 2</span>
-            <span class="tile-desc">19. století, RVP, ŠVP</span>
-        </a>
+        <div id="quiz-container">
+            <!-- Sem se generují otázky -->
+        </div>
+        
+        <div class="nav-buttons">
+            <button class="nav-btn" id="btn-prev" onclick="predchoziOtazka()">Předchozí</button>
+            <button class="nav-btn" id="btn-next" onclick="dalsiOtazka()">Další otázka</button>
+        </div>
 
-        <a href="otazka_3.html" target="_blank" class="tile">
-            <span class="tile-number">3</span>
-            <span class="tile-title">Otázka 3</span>
-            <span class="tile-desc">Test zatím nevytvořen</span>
-        </a>
-
-        <a href="otazka_4.html" target="_blank" class="tile">
-            <span class="tile-number">4</span>
-            <span class="tile-title">Otázka 4</span>
-            <span class="tile-desc">Test zatím nevytvořen</span>
-        </a>
-
-        <a href="otazka_5.html" target="_blank" class="tile">
-            <span class="tile-number">5</span>
-            <span class="tile-title">Otázka 5</span>
-            <span class="tile-desc">Test zatím nevytvořen</span>
-        </a>
-
-        <a href="otazka_6.html" target="_blank" class="tile">
-            <span class="tile-number">6</span>
-            <span class="tile-title">Otázka 6</span>
-            <span class="tile-desc">Test zatím nevytvořen</span>
-        </a>
-
-        <a href="otazka_7.html" target="_blank" class="tile">
-            <span class="tile-number">7</span>
-            <span class="tile-title">Otázka 7</span>
-            <span class="tile-desc">Test zatím nevytvořen</span>
-        </a>
-
-        <a href="otazka_8.html" target="_blank" class="tile">
-            <span class="tile-number">8</span>
-            <span class="tile-title">Otázka 8</span>
-            <span class="tile-desc">Test zatím nevytvořen</span>
-        </a>
-
-        <a href="otazka_9.html" target="_blank" class="tile">
-            <span class="tile-number">9</span>
-            <span class="tile-title">Otázka 9</span>
-            <span class="tile-desc">Test zatím nevytvořen</span>
-        </a>
-
-        <a href="otazka_10.html" target="_blank" class="tile">
-            <span class="tile-number">10</span>
-            <span class="tile-title">Otázka 10</span>
-            <span class="tile-desc">Test zatím nevytvořen</span>
-        </a>
-
-        <a href="otazka_11.html" target="_blank" class="tile">
-            <span class="tile-number">11</span>
-            <span class="tile-title">Otázka 11</span>
-            <span class="tile-desc">Test zatím nevytvořen</span>
-        </a>
-
-        <a href="otazka_12.html" target="_blank" class="tile">
-            <span class="tile-number">12</span>
-            <span class="tile-title">Otázka 12</span>
-            <span class="tile-desc">Test zatím nevytvořen</span>
-        </a>
-
-        <a href="otazka_13.html" target="_blank" class="tile">
-            <span class="tile-number">13</span>
-            <span class="tile-title">Otázka 13</span>
-            <span class="tile-desc">Test zatím nevytvořen</span>
-        </a>
-
-        <a href="otazka_14.html" target="_blank" class="tile">
-            <span class="tile-number">14</span>
-            <span class="tile-title">Otázka 14</span>
-            <span class="tile-desc">Test zatím nevytvořen</span>
-        </a>
-
-        <a href="otazka_15.html" target="_blank" class="tile">
-            <span class="tile-number">15</span>
-            <span class="tile-title">Otázka 15</span>
-            <span class="tile-desc">Test zatím nevytvořen</span>
-        </a>
-
-        <a href="otazka_16.html" target="_blank" class="tile">
-            <span class="tile-number">16</span>
-            <span class="tile-title">Otázka 16</span>
-            <span class="tile-desc">Test zatím nevytvořen</span>
-        </a>
-
+        <div class="bottom-panel">
+            <button class="evaluate-btn" onclick="zobrazitKonecneSkore()">Vyhodnotit test</button>
+            <div id="result"></div>
+        </div>
     </div>
 
+    <script>
+        // Globální proměnné pro stav aplikace
+        let aktualniOtazky = [];
+        let aktualniIndex = 0;
+        let score = 0;
+        let answeredQuestions = 0;
+
+        // 1. ZACHYCENÍ KLIKNUTÍ NA DLAŽDICI
+        document.querySelectorAll('.tile').forEach(tile => {
+            tile.addEventListener('click', function(e) {
+                e.preventDefault(); // Zabrání přesměrování
+                const url = this.getAttribute('href');
+                const testTitle = this.querySelector('.tile-title').innerText;
+                const testDesc = this.querySelector('.tile-desc').innerText;
+                
+                spustitTest(url, testTitle, testDesc);
+            });
+        });
+
+        // 2. FUNKCE PRO NATAŽENÍ A SPUŠTĚNÍ TESTU
+        async function spustitTest(url, title, desc) {
+            document.getElementById('home-view').style.display = 'none';
+            document.getElementById('test-view').style.display = 'block';
+            document.getElementById('test-header-title').innerHTML = `${title} <br><span style="font-size:0.6em; color:#7f8c8d;">${desc}</span>`;
+            document.getElementById('quiz-container').innerHTML = '<p style="text-align:center;">Načítám otázky...</p>';
+            document.getElementById('result').innerHTML = ''; // Reset výsledku
+            
+            try {
+                // Stažení obsahu HTML souboru
+                const response = await fetch(url);
+                if (!response.ok) throw new Error("Soubor s testem nebyl nalezen nebo ještě neexistuje.");
+                const htmlText = await response.text();
+
+                // Vyextrahování pole 'otazky' z textu HTML pomocí regexu
+                // Hledáme 'const otazky = [' a sbíráme vše až po značku zavírací závorky pole '] ;' nebo '] '
+                const startString = "const otazky = [";
+                const startIndex = htmlText.indexOf(startString);
+                
+                if (startIndex === -1) throw new Error("V souboru nebyly nalezeny žádné otázky.");
+
+                // Toto je trochu hack pro jednoduchost, ideálně bys měl data v JSON souborech, 
+                // ale takto to bude fungovat pro tvůj stávající kód.
+                const scriptBody = htmlText.substring(startIndex);
+                const endIndex = scriptBody.indexOf('];') + 2; 
+                let dataString = scriptBody.substring(0, endIndex);
+                
+                // Obalení do anonymní funkce pro bezpečné vyhodnocení (eval) 
+                // Získáme tak skutečné JS pole, aniž bychom ovlivnili global scope
+                aktualniOtazky = eval(`(function() { ${dataString}; return otazky; })()`);
+                
+                if(!aktualniOtazky || aktualniOtazky.length === 0) throw new Error("Pole otázek je prázdné.");
+
+                // Připravit logiku
+                score = 0;
+                answeredQuestions = 0;
+                aktualniIndex = 0;
+                vygenerovatHTML();
+                zobrazitOtazku(0);
+
+            } catch (error) {
+                document.getElementById('quiz-container').innerHTML = `<p style="text-align:center; color:red;">Chyba: ${error.message}</p>`;
+                document.querySelector('.nav-buttons').style.display = 'none';
+            }
+        }
+
+        // 3. VYGENEROVÁNÍ HTML STRUKTURY DO KONTEJNERU
+        function vygenerovatHTML() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+            document.querySelector('.nav-buttons').style.display = 'flex';
+
+            aktualniOtazky.forEach((otazka, index) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.id = `q-card-${index}`;
+                
+                const title = document.createElement('div');
+                title.className = 'question-title';
+                title.textContent = `${index + 1}. ${otazka.q}`;
+                card.appendChild(title);
+
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options';
+
+                otazka.options.forEach((opt, optIndex) => {
+                    const label = document.createElement('label');
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    // Aby name bylo unikátní i přes vícero spuštění
+                    radio.name = `q-dynamic-${index}`; 
+                    radio.value = optIndex;
+                    
+                    radio.addEventListener('change', function() {
+                        const currentCard = document.getElementById(`q-card-${index}`);
+                        const allRadios = currentCard.querySelectorAll('input[type="radio"]');
+                        const labels = currentCard.querySelectorAll('label');
+                        const expDiv = document.getElementById(`exp${index}`);
+                        
+                        allRadios.forEach(r => r.disabled = true);
+                        currentCard.classList.add('locked');
+
+                        const selectedVal = parseInt(this.value);
+                        const correctVal = aktualniOtazky[index].a;
+
+                        labels[correctVal].classList.add('correct');
+
+                        if (selectedVal === correctVal) {
+                            score++;
+                            expDiv.className = 'explanation success';
+                            expDiv.innerHTML = `<strong>Správně!</strong><br><strong>Zdůvodnění:</strong> ${aktualniOtazky[index].exp}`;
+                        } else {
+                            labels[selectedVal].classList.add('incorrect');
+                            expDiv.className = 'explanation error';
+                            expDiv.innerHTML = `<strong>Špatně.</strong><br>
+                                                <strong>Správná odpověď:</strong> <em>${aktualniOtazky[index].options[correctVal]}</em><br>
+                                                <strong>Zdůvodnění:</strong> ${aktualniOtazky[index].exp}`;
+                        }
+                        expDiv.style.display = 'block';
+                        answeredQuestions++;
+                    });
+
+                    label.appendChild(radio);
+                    label.appendChild(document.createTextNode(opt));
+                    optionsDiv.appendChild(label);
+                });
+
+                card.appendChild(optionsDiv);
+
+                const explanationDiv = document.createElement('div');
+                explanationDiv.className = 'explanation';
+                explanationDiv.id = `exp${index}`;
+                card.appendChild(explanationDiv);
+
+                container.appendChild(card);
+            });
+        }
+
+        // 4. STRÁNKOVÁNÍ - ZOBRAZÍ JEN JEDNU OTÁZKU
+        function zobrazitOtazku(index) {
+            // Skryje všechny
+            const allCards = document.querySelectorAll('.question-card');
+            allCards.forEach(card => card.classList.remove('active'));
+            
+            // Zobrazí tu správnou
+            const currentCard = document.getElementById(`q-card-${index}`);
+            if (currentCard) {
+                currentCard.classList.add('active');
+            }
+
+            // Aktualizace indikátoru a tlačítek
+            document.getElementById('progress-indicator').textContent = `Otázka ${index + 1} z ${aktualniOtazky.length}`;
+            
+            document.getElementById('btn-prev').disabled = (index === 0);
+            document.getElementById('btn-next').disabled = (index === aktualniOtazky.length - 1);
+        }
+
+        function dalsiOtazka() {
+            if (aktualniIndex < aktualniOtazky.length - 1) {
+                aktualniIndex++;
+                zobrazitOtazku(aktualniIndex);
+            }
+        }
+
+        function predchoziOtazka() {
+            if (aktualniIndex > 0) {
+                aktualniIndex--;
+                zobrazitOtazku(aktualniIndex);
+            }
+        }
+
+        // 5. VYHODNOCENÍ TESTU (zůstává podobné, jen referuje na lokální proměnné)
+        function zobrazitKonecneSkore() {
+            const resultDiv = document.getElementById('result');
+            
+            if (answeredQuestions < aktualniOtazky.length) {
+                resultDiv.style.color = '#e67e22';
+                resultDiv.innerHTML = `Zatím jste odpověděl/a na ${answeredQuestions} z ${aktualniOtazky.length} otázek. <br> Průběžné skóre: ${score} správně.`;
+                return;
+            }
+
+            const percent = Math.round((score / aktualniOtazky.length) * 100);
+            resultDiv.innerHTML = `Váš konečný výsledek: ${score} z ${aktualniOtazky.length} bodů (${percent} %).`;
+            
+            if(percent >= 80) {
+                resultDiv.style.color = '#27ae60';
+                resultDiv.innerHTML += "<br>Vynikající výkon!";
+            } else if (percent >= 50) {
+                resultDiv.style.color = '#f39c12';
+                resultDiv.innerHTML += "<br>Slušný výkon, ale ještě je prostor ke zlepšení.";
+            } else {
+                resultDiv.style.color = '#c0392b';
+                resultDiv.innerHTML += "<br>Doporučuji zopakovat látku.";
+            }
+        }
+
+        // 6. NÁVRAT NA ROZCESTNÍK
+        function zpetNaRozcestnik() {
+            document.getElementById('test-view').style.display = 'none';
+            document.getElementById('home-view').style.display = 'block';
+            // Vyčištění paměti pro jistotu
+            document.getElementById('quiz-container').innerHTML = '';
+            aktualniOtazky = [];
+        }
+
+    </script>
 </body>
 </html>
