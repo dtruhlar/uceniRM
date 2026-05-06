@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Státnicový rozcestník z ČJ</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .header-container {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            color: #7f8c8d;
+            font-size: 1.2em;
+        }
+
+        /* Mřížka pro dlaždice */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Samotná dlaždice */
+        .tile {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-top: 6px solid #3498db;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Efekt po přejetí myší */
+        .tile:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+            border-top-color: #27ae60;
+        }
+
+        .tile-number {
+            font-size: 3em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .tile-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .tile-desc {
+            font-size: 0.9em;
+            color: #95a5a6;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <h1>Rozcestník: Státnice z ČJ</h1>
+        <p class="subtitle">Vyberte si otázku k procvičení. Test se otevře v novém okně.</p>
+    </div>
+
+    <div class="grid-container">
+        <!-- Generování 16 dlaždic -->
+        <!-- target="_blank" zajišťuje otevření v nové záložce -->
+        
+        <a href="otazka_1.html" target="_blank" class="tile">
+            <span class="tile-number">1</span>
+            <span class="tile-title">Otázka 1</span>
+            <span class="tile-desc">Divadla, Havel, Didaktika</span>
+        </a>
+
+        <a href="otazka_2.html" target="_blank" class="tile">
+            <span class="tile-number">2</span>
+            <span class="tile-title">Otázka 2</span>
+            <span class="tile-desc">19. století, RVP, ŠVP</span>
+        </a>
+
+        <a href="otazka_3.html" target="_blank" class="tile">
+            <span class="tile-number">3</span>
+            <span class="tile-title">Otázka 3</span>
+            <span class="tile-desc">Test zatím nevytvořen</span>
+        </a>
+
+        <a href="otazka_4.html" target="_blank" class="tile">
+            <span class="tile-number">4</span>
+            <span class="tile-title">Otázka 4</span>
+            <span class="tile-desc">Test zatím nevytvořen</span>
+        </a>
+
+        <a href="otazka_5.html" target="_blank" class="tile">
+            <span class="tile-number">5</span>
+            <span class="tile-title">Otázka 5</span>
+            <span class="tile-desc">Test zatím nevytvořen</span>
+        </a>
+
+        <a href="otazka_6.html" target="_blank" class="tile">
+            <span class="tile-number">6</span>
+            <span class="tile-title">Otázka 6</span>
+            <span class="tile-desc">Test zatím nevytvořen</span>
+        </a>
+
+        <a href="otazka_7.html" target="_blank" class="tile">
+            <span class="tile-number">7</span>
+            <span class="tile-title">Otázka 7</span>
+            <span class="tile-desc">Test zatím nevytvořen</span>
+        </a>
+
+        <a href="otazka_8.html" target="_blank" class="tile">
+            <span class="tile-number">8</span>
+            <span class="tile-title">Otázka 8</span>
+            <span class="tile-desc">Test zatím nevytvořen</span>
+        </a>
+
+        <a href="otazka_9.html" target="_blank" class="tile">
+            <span class="tile-number">9</span>
+            <span class="tile-title">Otázka 9</span>
+            <span class="tile-desc">Test zatím nevytvořen</span>
+        </a>
+
+        <a href="otazka_10.html" target="_blank" class="tile">
+            <span class="tile-number">10</span>
+            <span class="tile-title">Otázka 10</span>
+            <span class="tile-desc">Test zatím nevytvořen</span>
+        </a>
+
+        <a href="otazka_11.html" target="_blank" class="tile">
+            <span class="tile-number">11</span>
+            <span class="tile-title">Otázka 11</span>
+            <span class="tile-desc">Test zatím nevytvořen</span>
+        </a>
+
+        <a href="otazka_12.html" target="_blank" class="tile">
+            <span class="tile-number">12</span>
+            <span class="tile-title">Otázka 12</span>
+            <span class="tile-desc">Test zatím nevytvořen</span>
+        </a>
+
+        <a href="otazka_13.html" target="_blank" class="tile">
+            <span class="tile-number">13</span>
+            <span class="tile-title">Otázka 13</span>
+            <span class="tile-desc">Test zatím nevytvořen</span>
+        </a>
+
+        <a href="otazka_14.html" target="_blank" class="tile">
+            <span class="tile-number">14</span>
+            <span class="tile-title">Otázka 14</span>
+            <span class="tile-desc">Test zatím nevytvořen</span>
+        </a>
+
+        <a href="otazka_15.html" target="_blank" class="tile">
+            <span class="tile-number">15</span>
+            <span class="tile-title">Otázka 15</span>
+            <span class="tile-desc">Test zatím nevytvořen</span>
+        </a>
+
+        <a href="otazka_16.html" target="_blank" class="tile">
+            <span class="tile-number">16</span>
+            <span class="tile-title">Otázka 16</span>
+            <span class="tile-desc">Test zatím nevytvořen</span>
+        </a>
+
+    </div>
+
+</body>
+</html>
